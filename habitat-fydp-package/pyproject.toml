@@ -21,6 +21,7 @@ pandas = "1"
 wwo-hist = "^0.0.7"
 sklearn = "^0.0"
 pmdarima = "^1.8.4"
+scikit-learn = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
