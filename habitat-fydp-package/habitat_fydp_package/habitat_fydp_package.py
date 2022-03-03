@@ -219,9 +219,7 @@ def plot_stations():
     return erie_map
 
 
-def plot_lake_depth(
-    path_to_contour_file="/Users/nicholascalen/downloads/Lake_Erie_Contours/Lake_Erie_Contours.dbf",
-):
+def plot_lake_depth():
     """
     Given a path to the stored contour depth file of lake erie (this is available from the sdk), plot it.
     User can provide a path input to the locations of the file optionally.
@@ -239,7 +237,7 @@ def plot_lake_depth(
         ticks=[0, 16, 32, 48, 64],
     )
 
-    sf = shp.Reader(path_to_contour_file)
+    sf = shp.Reader("Lake_Erie_Contours/Lake_Erie_Contours.dbf")
     plt.figure(figsize=(5, 5))
     zs = []
     for shape in sf.shapeRecords():
@@ -252,7 +250,6 @@ def plot_lake_depth(
     plt.ylabel("Lattitude")
     plt.grid(True)
     plt.show()
-
 
 def univariate_forecast_arima(series, horizon, frequency_of_obvs):
     """
