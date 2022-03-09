@@ -17,6 +17,8 @@ from pmdarima.arima import auto_arima
 from sklearn.metrics import r2_score, median_absolute_error, mean_absolute_error
 from sklearn.metrics import median_absolute_error, mean_squared_error, mean_squared_log_error 
 import datetime 
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 
 from .habitat_fydp_package import *

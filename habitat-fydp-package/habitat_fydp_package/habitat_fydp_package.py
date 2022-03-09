@@ -344,13 +344,12 @@ def get_weather_variables(
     return hist_weather_data[0][cols]
 
 
-def aggregate_habnet_data(
+def aggregate_data(
     station_name,
     measurement,
     start_date,
     end_date,
-    freq,
-    path_to_contour_file="/Users/nicholascalen/downloads/Lake_Erie_Contours/Lake_Erie_Contours.dbf",
+    freq
 ):
     """
     Function to aggregate all available data into one frame.
@@ -380,7 +379,7 @@ def aggregate_habnet_data(
     stations = list_stations()
     lat = round(stations[station_name][1]["latitude"], 3)
     lon = round(stations[station_name][2]["longitude"], 3)
-    sf = shp.Reader(path_to_contour_file)
+    sf = shp.Reader("habitat_fydp_package/Lake_Erie_Contours/Lake_Erie_Contours.dbf")
     zs = []
     for shape in sf.shapeRecords():
         x = [round(i[0], 3) for i in shape.shape.points[:]]
@@ -393,30 +392,21 @@ def aggregate_habnet_data(
     return df
 
     def get_dunnville_data():
-
         # define the scope
         scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-
         # add credentials to the account
         creds = ServiceAccountCredentials.from_json_keyfile_name('service_account.json', scope)
-
         # authorize the clientsheet 
         client = gspread.authorize(creds)
-
         # get the instance of the Spreadsheet
         sheet = client.open('Dunnville Sensor Data Intake')
-
         # get the first sheet of the Spreadsheet
         sheet_instance = sheet.get_worksheet(0)
-
         # get all the records of the data
         records_data = sheet_instance.get_all_records()
-
         # view the data
         print(records_data)
-
         # convert the json to dataframe
         records_df = pd.DataFrame.from_dict(records_data)
-
         # view the top records
         return records_df
