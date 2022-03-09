@@ -19,7 +19,8 @@ from sklearn.metrics import (
     mean_squared_log_error,
 )
 import datetime
-
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 def plotMovingAverage(
     series, window, plot_intervals=False, scale=1.96, plot_anomalies=False
@@ -237,7 +238,7 @@ def plot_lake_depth():
         ticks=[0, 16, 32, 48, 64],
     )
 
-    sf = shp.Reader("Lake_Erie_Contours/Lake_Erie_Contours.dbf")
+    sf = shp.Reader("habitat_fydp_package/Lake_Erie_Contours/Lake_Erie_Contours.dbf")
     plt.figure(figsize=(5, 5))
     zs = []
     for shape in sf.shapeRecords():
@@ -390,3 +391,32 @@ def aggregate_habnet_data(
     df = glos.join(weather)
     df["depth (m)"] = z
     return df
+
+    def get_dunnville_data():
+
+        # define the scope
+        scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+
+        # add credentials to the account
+        creds = ServiceAccountCredentials.from_json_keyfile_name('service_account.json', scope)
+
+        # authorize the clientsheet 
+        client = gspread.authorize(creds)
+
+        # get the instance of the Spreadsheet
+        sheet = client.open('Dunnville Sensor Data Intake')
+
+        # get the first sheet of the Spreadsheet
+        sheet_instance = sheet.get_worksheet(0)
+
+        # get all the records of the data
+        records_data = sheet_instance.get_all_records()
+
+        # view the data
+        print(records_data)
+
+        # convert the json to dataframe
+        records_df = pd.DataFrame.from_dict(records_data)
+
+        # view the top records
+        return records_df
