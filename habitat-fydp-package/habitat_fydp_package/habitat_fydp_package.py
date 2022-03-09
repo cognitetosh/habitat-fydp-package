@@ -22,6 +22,27 @@ import datetime
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
+def get_dunnville_data():
+    # define the scope
+    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+    # add credentials to the account
+    creds = ServiceAccountCredentials.from_json_keyfile_name('service_account.json', scope)
+    # authorize the clientsheet 
+    client = gspread.authorize(creds)
+    # get the instance of the Spreadsheet
+    sheet = client.open('Dunnville Sensor Data Intake')
+    # get the first sheet of the Spreadsheet
+    sheet_instance = sheet.get_worksheet(0)
+    # get all the records of the data
+    records_data = sheet_instance.get_all_records()
+    # view the data
+    print(records_data)
+    # convert the json to dataframe
+    records_df = pd.DataFrame.from_dict(records_data)
+    # view the top records
+    return records_df
+
+
 def plotMovingAverage(
     series, window, plot_intervals=False, scale=1.96, plot_anomalies=False
 ):
@@ -391,22 +412,3 @@ def aggregate_data(
     df["depth (m)"] = z
     return df
 
-    def get_dunnville_data():
-        # define the scope
-        scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-        # add credentials to the account
-        creds = ServiceAccountCredentials.from_json_keyfile_name('service_account.json', scope)
-        # authorize the clientsheet 
-        client = gspread.authorize(creds)
-        # get the instance of the Spreadsheet
-        sheet = client.open('Dunnville Sensor Data Intake')
-        # get the first sheet of the Spreadsheet
-        sheet_instance = sheet.get_worksheet(0)
-        # get all the records of the data
-        records_data = sheet_instance.get_all_records()
-        # view the data
-        print(records_data)
-        # convert the json to dataframe
-        records_df = pd.DataFrame.from_dict(records_data)
-        # view the top records
-        return records_df
