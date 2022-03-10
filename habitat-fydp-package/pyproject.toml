@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "habitat-fydp-package"
-version = "0.0.8"
+version = "0.0.9"
 description = "Democratize access to HAB related data in Lake Erie to be used for scientific research"
 authors = ["Shanthosh Pushparajah <spushpar@uwaterloo.com>"]
 license = "MIT"

@@ -26,7 +26,7 @@ def get_dunnville_data():
     # define the scope
     scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
     # add credentials to the account
-    creds = ServiceAccountCredentials.from_json_keyfile_name('service_account.json', scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name("habitat_fydp_package/gsheet/service_account.json", scope)
     # authorize the clientsheet 
     client = gspread.authorize(creds)
     # get the instance of the Spreadsheet
